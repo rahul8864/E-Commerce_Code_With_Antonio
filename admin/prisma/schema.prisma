@@ -3,13 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "mongodb"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Store {
-  id  String @id @default(uuid())
+  // id  String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
   name String 
   userId String
   billboards Billboard[] @relation("StoreToBillboard")
@@ -23,8 +24,9 @@ model Store {
 }
 
 model Billboard {
-  id String @id @default(uuid())
-  storeId String
+  // id String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  storeId String @db.ObjectId
   store Store @relation("StoreToBillboard", fields: [storeId], references: [id])
   label String
   imageUrl String
@@ -36,10 +38,11 @@ model Billboard {
 }
 
 model Category {
-  id String @id @default(uuid())
-  storeId String
+  // id String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  storeId String @db.ObjectId
   store Store @relation("StoreToCategory", fields: [storeId], references: [id])
-  billboardId String
+  billboardId String @db.ObjectId
   billboard Billboard @relation(fields: [billboardId], references: [id])
   products Product[] @relation("CategoryToProduct")
   name String
@@ -51,8 +54,9 @@ model Category {
 }
 
 model Size {
-  id String @id @default(uuid())
-  storeId String
+  // id String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  storeId String @db.ObjectId
   store Store @relation("StoreToSize", fields: [storeId], references: [id])
   name String
   value String
@@ -64,8 +68,9 @@ model Size {
 }
 
 model Color {
-  id String @id @default(uuid())
-  storeId String
+  // id String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  storeId String @db.ObjectId
   store Store @relation("StoreToColor", fields: [storeId], references: [id])
   name String
   value String
@@ -77,18 +82,19 @@ model Color {
 }
 
 model Product {
-  id String @id @default(uuid())
-  storeId String
+  // id String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  storeId String @db.ObjectId
   store Store @relation("StoreToProduct", fields: [storeId], references: [id])
-  categoryId String
+  categoryId String @db.ObjectId
   category Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name String
-  price Decimal
+  price Float
   isFeatured Boolean @default(false)
   isArchived Boolean @default(false)
-  sizeId String
+  sizeId String @db.ObjectId
   size Size @relation(fields: [sizeId], references: [id])
-  colorId String
+  colorId String @db.ObjectId
   color Color @relation(fields: [colorId], references: [id])
   images Image[]
   orderItems OrderItem[]
@@ -102,8 +108,9 @@ model Product {
 }
 
 model Image {
-  id String @id @default(uuid())
-  productId String
+  // id String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  productId String @db.ObjectId
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   url String
   createdAt DateTime @default(now())
@@ -113,8 +120,9 @@ model Image {
 }
 
 model Order {
-  id String @id @default(uuid())
-  storeId String
+  // id String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  storeId String @db.ObjectId
   store Store @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[]
   isPaid Boolean @default(false)
@@ -127,10 +135,11 @@ model Order {
 }
 
 model OrderItem {
-  id String @id @default(uuid())
-  orderId String
+  // id String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  orderId String @db.ObjectId
   order Order @relation(fields: [orderId], references: [id])
-  productId String
+  productId String @db.ObjectId
   product Product @relation(fields: [productId], references: [id])
 
   @@index([orderId])
