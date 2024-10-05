@@ -1,5 +1,6 @@
 import React from 'react'
-import { UserButton, auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server'
+import { UserButton } from '@clerk/nextjs';
 import { MainNav } from '@/components/main-nav';
 import StoreSwitcher from '@/components/store-switcher';
 import { redirect } from 'next/navigation'
