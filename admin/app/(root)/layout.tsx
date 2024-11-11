@@ -4,11 +4,10 @@ import prismadb from "@/lib/prismadb";
 
 interface DashboardType {
     children: React.ReactNode;
-    params: { storeId: string }
 }
 
 export default async function SetupLayout({children}: DashboardType) {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
         redirect('/sign-in')

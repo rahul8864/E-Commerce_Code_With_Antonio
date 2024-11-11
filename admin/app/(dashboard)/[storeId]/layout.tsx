@@ -9,7 +9,7 @@ interface DashboardType {
 }
 
 export default async function Dashboard({children, params}: DashboardType) {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
         redirect('/sign-in')

@@ -10,19 +10,16 @@ import prismadb from "@/lib/prismadb"
 import { formatter } from "@/lib/utils";
 import { CreditCard, DollarSign, Package } from "lucide-react";
 
-interface DashboardPageProps {
-  params: { storeId: string }
-}
-
-const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
+const DashboardPage = async ({ params }: { params: Promise<{ storeId: string }> }) => {
+  const { storeId } = await params;
   const store = await prismadb.store.findFirst({
-    where: { id: params.storeId }
+    where: { id: storeId }
   });
 
-  const totalRevenue = await getTotalRevenue(params.storeId);
-  const salesCount = await getSalesCount(params.storeId);
-  const stockCount = await getStockCount(params.storeId);
-  const graphRevenue = await getGraphRevenue(params.storeId);
+  const totalRevenue = await getTotalRevenue(storeId);
+  const salesCount = await getSalesCount(storeId);
+  const stockCount = await getStockCount(storeId);
+  const graphRevenue = await getGraphRevenue(storeId);
 
   return (
     <div className="flex-col">

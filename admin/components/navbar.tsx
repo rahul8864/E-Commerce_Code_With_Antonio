@@ -8,7 +8,7 @@ import prismadb from '@/lib/prismadb';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 const Navbar = async () => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if(!userId) {
     redirect("/sign-in")
